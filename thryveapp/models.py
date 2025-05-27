@@ -41,3 +41,14 @@ class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Vote(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="votes")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    vote_type = models.BooleanField()  # True = like, False = dislike
+
+    class Meta:
+        unique_together = ('post', 'user')  # only one vote per user per post
+
+    def __str__(self):
+        return f"{self.user.username} {'liked' if self.vote_type else 'disliked'} {self.post.title}"
