@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
 from .models import UserProfile, Post, Category, Comment, Vote
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 from .serializers import (
     UserProfileSerializer, PostSerializer, CategorySerializer,
     CommentSerializer, VoteSerializer
@@ -20,11 +22,21 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['author__username', 'category__name', 'created_at']
+    search_fields = ['title', 'content', 'author__username']
+    ordering_fields = ['created_at']
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
