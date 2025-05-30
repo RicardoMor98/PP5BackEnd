@@ -25,3 +25,22 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+class VoteViewSet(viewsets.ModelViewSet):
+    queryset = Vote.objects.all()
+    serializer_class = VoteSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        post = serializer.validated_data['post']
+        vote_type = serializer.validated_data['vote_type']
+        user = self.request.user
+        vote, created = Vote.objects.update_or_create(
+            post=post, user=user,
+            defaults={'vote_type': vote_type}
+        )
+        serializer.instance = vote
