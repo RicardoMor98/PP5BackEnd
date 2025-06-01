@@ -22,6 +22,5 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('tryveapp.urls')),
-    path('api/auth/', include('users.urls')),  # if you added auth views
+    path('api/', include('thryveapp.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
