@@ -56,6 +56,21 @@ def perform_create(self, serializer):
 
     serializer.save(author=user)
 
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all().order_by('-created_at')
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        post = serializer.validated_data['post']
+        content = serializer.validated_data['content']
+
+        if Comment.objects.filter(post=post, author=user, content=content).exists():
+            raise serializers.ValidationError("You've already posted this exact comment.")
+
+        serializer.save(author=user)
+
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
