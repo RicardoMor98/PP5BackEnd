@@ -37,11 +37,15 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ['8000-ricardomor98-pp5backend-xanoqb6rxk8.ws-eu120.gitpod.io',
-                '8000-ricardomor98-pp5backend-xanoqb6rxk8.ws-eu120.gitpod.io',
-                '.herokuapp.com',]
+                'localhost',
+                '127.0.0.1'
+                'https://thryvepp5-34122aca64c4.herokuapp.com/',
+                '.herokuapp.com',
+                ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://8000-ricardomor98-pp5backend-xanoqb6rxk8.ws-eu120.gitpod.io"
+    "https://8000-ricardomor98-pp5backend-xanoqb6rxk8.ws-eu120.gitpod.io",
+    "https://thryvepp5-34122aca64c4.herokuapp.com",
 ]
 
 # Application definition
