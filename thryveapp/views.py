@@ -21,22 +21,40 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['author__username', 'category__name', 'created_at']
-    search_fields = ['title', 'content', 'author__username']
-    ordering_fields = ['created_at']
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+    # 🔎 Filters by query parameters in the URL
+    filterset_fields = [
+        'author__username',
+        'category__name',
+        'created_at',
+    ]
 
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # 🔍 Enables keyword-based search
+    search_fields = [
+        'title',
+        'content',
+        'author__username',
+    ]
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+    # 🔃 Allows clients to sort results by these fields
+    ordering_fields = [
+        'created_at',
+        'title',
+    ]
+
+def perform_create(self, serializer):
+    user = self.request.user
+    post = serializer.validated_data['post']
+    content = serializer.validated_data['content']
+
+    # Check for duplicate comment by the same user on the same post
+    if Comment.objects.filter(post=post, author=user, content=content).exists():
+        raise serializers.ValidationError("You've already posted this exact comment.")
+
+    serializer.save(author=user)
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
