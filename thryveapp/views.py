@@ -11,10 +11,6 @@ from .permissions import IsOwnerOrReadOnly
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 # Create your views here.
-
-@api_view(['GET'])
-def root_view(request):
-    return Response({"message": "Thryve API root. Visit /api/ for endpoints."})
     
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
