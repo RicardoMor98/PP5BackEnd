@@ -8,13 +8,18 @@ from .serializers import (
     CommentSerializer, VoteSerializer
 )
 from .permissions import IsOwnerOrReadOnly
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
-# Create your views here.
+from rest_framework.decorators import api_view
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.http import JsonResponse
 
+@ensure_csrf_cookie
+def get_csrf_token(request):
+    return JsonResponse({"message": "CSRF cookie set"})
+    
 @api_view(['GET'])
-def root_view(request):
-    return Response({"message": "Thryve API root. Visit /api/ for endpoints."})
+def get_data(request):
+    return Response({"message": "Hello from Django!"})
     
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()

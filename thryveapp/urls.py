@@ -1,7 +1,18 @@
 from django.urls import path, include
-from .views import root_view
 from rest_framework.routers import DefaultRouter
 from .views import UserProfileViewSet, PostViewSet, CommentViewSet, CategoryViewSet, VoteViewSet
+from django.urls import path
+from . import views
+from django.urls import path
+from .views import get_csrf_token
+
+urlpatterns = [
+    path('api/csrf/', get_csrf_token),
+]
+
+urlpatterns = [
+    path('api/data/', views.get_data),
+]
 
 router = DefaultRouter()
 router.register(r'profiles', UserProfileViewSet)
@@ -11,6 +22,5 @@ router.register(r'categories', CategoryViewSet)
 router.register(r'votes', VoteViewSet)
 
 urlpatterns = [
-    path('', root_view),  # 👈 Now hitting "/" returns a JSON message
     path('', include(router.urls)),
 ]

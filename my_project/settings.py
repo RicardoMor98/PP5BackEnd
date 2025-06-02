@@ -36,7 +36,12 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "https://localhost:3000",  # React dev server
+]
 
 ALLOWED_HOSTS = [
     '8000-ricardomor98-pp5backend-xanoqb6rxk8.ws-eu120.gitpod.io',
@@ -48,7 +53,7 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     "https://8000-ricardomor98-pp5backend-xanoqb6rxk8.ws-eu120.gitpod.io",
-    "http://localhost:3000",
+    "https://localhost:3000",
     "https://thryvepp5-34122aca64c4.herokuapp.com",
 ]
 
