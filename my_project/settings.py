@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 
 load_dotenv()  # loads .env file into os.environ
 
-SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
+
 DATABASES = {
     'default': dj_database_url.parse(os.getenv("DATABASE_URL"))
 }
@@ -32,10 +32,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -50,7 +50,7 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     "https://8000-ricardomor98-pp5backend-xanoqb6rxk8.ws-eu120.gitpod.io",
     "http://localhost:3000",
-    "https://thryvepp5-34122aca64c4.herokuapp.com",
+    "https://thryvepp5-34122aca64c4.herokuapp.com/",
 ]
 
 # Application definition
