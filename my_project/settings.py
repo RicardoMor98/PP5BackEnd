@@ -36,15 +36,19 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-ricardomor98-pp5backend-xanoqb6rxk8.ws-eu120.gitpod.io',
-                'localhost',
-                '127.0.0.1'
-                'https://thryvepp5-34122aca64c4.herokuapp.com/',
-                '.herokuapp.com',
-                ]
+CORS_ALLOW_ALL_ORIGINS = True
+
+ALLOWED_HOSTS = [
+    '8000-ricardomor98-pp5backend-xanoqb6rxk8.ws-eu120.gitpod.io',
+    'localhost',
+    '127.0.0.1',
+    'thryvepp5-34122aca64c4.herokuapp.com',
+    '.herokuapp.com',
+]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://8000-ricardomor98-pp5backend-xanoqb6rxk8.ws-eu120.gitpod.io",
+    "http://localhost:3000",
     "https://thryvepp5-34122aca64c4.herokuapp.com",
 ]
 
@@ -65,6 +69,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -149,7 +154,8 @@ MEDIA_URL = '/media/'
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
