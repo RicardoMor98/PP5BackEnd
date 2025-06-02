@@ -10,16 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
 import os
-import dj_database_url
-if os.path.isfile('env.py'):
-    import env
-if os.path.exists('env.py'):
-    import env
-CLOUDINARY_STORAGE = {
-    'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
+from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()  # loads .env file into os.environ
+
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
+DATABASES = {
+    'default': dj_database_url.parse(os.getenv("DATABASE_URL"))
 }
+CLOUDINARY_URL = os.getenv("CLOUDINARY_URL")
 
 
 
